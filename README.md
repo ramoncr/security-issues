@@ -7,3 +7,7 @@
 - XSS (in mail en front-end)
 - Using vulnerable libraries (Dotnet, NPM)
 
+## Applicatie
+- DotNet LTS
+- Front-end ?? Angular?Vue?
+- Notities maken
