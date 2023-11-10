@@ -6,6 +6,7 @@
 - SSRF (door middel van een PDF reader)
 - XSS (in mail en front-end)
 - Using vulnerable libraries (Dotnet, NPM)
+- command injection: https://www.stackhawk.com/blog/net-command-injection-examples-and-prevention/
 
 ## Applicatie
 - DotNet LTS
