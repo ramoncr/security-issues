@@ -7,6 +7,7 @@
 - XSS (in mail en front-end)
 - Using vulnerable libraries (Dotnet, NPM)
 - command injection: https://www.stackhawk.com/blog/net-command-injection-examples-and-prevention/
+- CSRF (CORS headers)
 
 ## Applicatie
 - DotNet LTS
