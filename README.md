@@ -8,6 +8,7 @@
 - Using vulnerable libraries (Dotnet, NPM)
 - command injection: https://www.stackhawk.com/blog/net-command-injection-examples-and-prevention/
 - CSRF (CORS headers)
+- Hardcoded credentials
 
 ## Applicatie
 - DotNet LTS
