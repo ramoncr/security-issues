@@ -15,3 +15,7 @@
 - Front-end ?? Angular?Vue?
 - Notities maken
 - Login https://www.c-sharpcorner.com/article/authentication-and-authorization-in-asp-net-core-web-api-with-json-web-tokens/
+
+
+- dotnet ef migrations add Update2
+- dotnet ef database update
