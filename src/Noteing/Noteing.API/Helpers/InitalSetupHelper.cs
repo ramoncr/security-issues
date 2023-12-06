@@ -7,15 +7,17 @@ namespace Noteing.API.Helpers
     {
         internal static async Task CreateRoles(IServiceProvider serviceProvider)
         {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            await TryAddRole(roleManager, "Admin");
+            await TryAddRole(roleManager, "Normal");
+            await TryAddRole(roleManager, "Premium");
+        }
 
-            IdentityResult adminRoleResult;
-            bool adminRoleExists = await RoleManager.RoleExistsAsync("Admin");
-
-            if (!adminRoleExists)
+        private static async Task TryAddRole(RoleManager<IdentityRole> roleManager, string name)
+        {
+            if (!await roleManager.RoleExistsAsync(name))
             {
-                adminRoleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+                await roleManager.CreateAsync(new IdentityRole(name));
             }
         }
     }

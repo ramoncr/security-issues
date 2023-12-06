@@ -47,7 +47,7 @@ namespace Noteing.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
-            var note = _dbContext.Notes.First(note => note.Id == id);
+            var note = _dbContext.Notes.First(note => note.Id == id && note.Owner == IdentityHelper.GetCurrentUserId(User));
             _dbContext.Notes.Remove(note);
         }
 
@@ -55,7 +55,6 @@ namespace Noteing.API.Controllers
         {
             if (value.Id == Guid.Empty)
                 value.Id = Guid.NewGuid();
-
 
             var existingNote = _dbContext.Notes.FirstOrDefault(note => note.Id == value.Id);
             if (existingNote == null)
