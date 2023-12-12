@@ -81,7 +81,7 @@ namespace Noteing.API.Controllers
                 return BadRequest();
 
             var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-            await _mailService.SendPasswordResetEmail(model.Email, resetToken);
+            await _mailService.SendPasswordResetEmail(model.Email, user.FirstName, resetToken);
             return Ok(resetToken);
         }
 

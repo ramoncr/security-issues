@@ -20,7 +20,6 @@ namespace Noteing.API.Controllers
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://maps.googleapis.com/maps/api");
-"/user/getalldata/?"
             var path = googleMapsRequestModel.Path;
 
             path += path.Contains('?') ? '&' : '?';

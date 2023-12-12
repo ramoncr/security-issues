@@ -29,6 +29,8 @@ namespace Noteing.API.Controllers
                 .ToList();
         }
 
+
+// Add endponit to get all notes?? TODO
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {

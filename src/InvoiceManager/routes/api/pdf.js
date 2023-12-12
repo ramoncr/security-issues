@@ -26,13 +26,6 @@ router.get('/:invoiceNumber', async function(req, res, next) {
         'Content-Length': pdf.length
     });
     res.end(pdf);
-
-'0e23567890987654'
-
-    if(false == '0')  {
-
-    return special;
-    }
 });
 
 module.exports = router;

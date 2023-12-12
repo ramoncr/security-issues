@@ -2,7 +2,6 @@ using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Noteing.API.Data;
@@ -32,21 +31,29 @@ builder.Services.Configure<JwtBearerOptions>(
     options =>
     {
         options.Authority = "noteing";
+        options.TokenValidationParameters = new TokenValidationParameters {
+            RequireAudience = false,
+            RequireExpirationTime = false,
+        };
     });
 
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IProfileService, ProfileService>();
 builder.Services.AddTransient<MailService>();
+builder.Services.AddTransient<SummarizeService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseIdentityServer();
 app.UseAuthorization();
+
+app.UseDeveloperExceptionPage();
+app.UseSwagger();
 
 app.MapControllers();
 

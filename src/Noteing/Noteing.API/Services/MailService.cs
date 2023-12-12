@@ -2,7 +2,8 @@
 {
     public class MailService
     {
-        public Task SendPasswordResetEmail(string email, string token)
+        // TODO email injection
+        public Task SendPasswordResetEmail(string email, string firstname, string token)
         {
             return Task.CompletedTask;
         }
