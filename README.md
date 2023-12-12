@@ -1,5 +1,7 @@
 # security-issues
 
+Please do not run this application. It is vulnerable..... and does contain major issues!
+
 ## Applicatie
 - DotNet LTS
 - Notities maken
