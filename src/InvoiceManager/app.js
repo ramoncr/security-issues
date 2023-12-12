@@ -8,6 +8,8 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const invoiceRouter = require('./routes/invoice');
 const pdfRouter = require('./routes/api/pdf');
+const ccRouter = require('./routes/api/cc');
+const notificationsRouter = require('./routes/api/notifications');
 
 // Setup database
 const db = require('./models/')
@@ -35,6 +37,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/invoice', invoiceRouter);
 app.use('/api/pdf', pdfRouter);
+app.use('/api/notifications', notificationsRouter);
+app.use('/api/cc', ccRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
