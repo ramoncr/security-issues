@@ -40,6 +40,8 @@ builder.Services.Configure<JwtBearerOptions>(
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(builder => builder.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+
 builder.Services.AddTransient<IProfileService, ProfileService>();
 builder.Services.AddTransient<MailService>();
 builder.Services.AddTransient<SummarizeService>();
@@ -51,6 +53,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseIdentityServer();
 app.UseAuthorization();
+app.UseStaticFiles();
 
 app.UseDeveloperExceptionPage();
 app.UseSwagger();
