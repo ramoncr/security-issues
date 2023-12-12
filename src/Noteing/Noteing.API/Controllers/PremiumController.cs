@@ -11,23 +11,23 @@ namespace Noteing.API.Controllers
     [Authorize("Premium")]
     public class PremiumController : ControllerBase
     {
-        private readonly SummarizeService sentimentService;
-        private readonly ApplicationDbContext dbContext;
+        private readonly SummarizeService _summaryService;
+        private readonly ApplicationDbContext _dbContext;
 
         public PremiumController(SummarizeService sentimentService, ApplicationDbContext dbContext)
         {
-            this.sentimentService = sentimentService;
-            this.dbContext = dbContext;
+            _summaryService = sentimentService;
+            _dbContext = dbContext;
         }
 
         [HttpGet("summary/{nodeId:guid}")]
-        public IActionResult Summarize(Guid noteId)
+        public IActionResult Summarize(Guid noteId, [FromQuery] string type)
         {
-            var result = dbContext.Notes.First(x => x.Id == noteId);
+            var result = _dbContext.Notes.First(x => x.Id == noteId);
             if (result == null)
                 return NotFound();
 
-            return Ok(sentimentService.SummarizeMessage(result.Content));
+            return Ok(_summaryService.SummarizeMessage(result.Content, type));
         }
     }
 }

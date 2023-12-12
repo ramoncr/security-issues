@@ -6,7 +6,6 @@ namespace Noteing.API.Helpers
     {
         internal static X509Certificate2 LoadSigningCertificate()
         {
-            // RSA Cert in static content? TODO
 #pragma warning disable SYSLIB0026
             return new X509Certificate2("./Certs/rsaCert.pfx", "1234");
 #pragma warning restore SYSLIB0026

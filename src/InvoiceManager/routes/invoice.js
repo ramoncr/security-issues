@@ -27,7 +27,6 @@ router.get("/:invoiceNumber", function (req, res, next) {
  * }
  */
 
-// TODO Split merge with injection on findall condition
 router.post("/filter", function (req, res, next) {
   const condition = req.body.condition;
   db.invoices

@@ -34,7 +34,8 @@ builder.Services.Configure<JwtBearerOptions>(
     options =>
     {
         options.Authority = "noteing";
-        options.TokenValidationParameters = new TokenValidationParameters {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
             RequireAudience = false,
             RequireExpirationTime = false,
         };
@@ -48,6 +49,9 @@ builder.Services.AddCors(builder => builder.AddDefaultPolicy(policy => policy.Al
 builder.Services.AddTransient<IProfileService, ProfileService>();
 builder.Services.AddTransient<MailService>();
 builder.Services.AddTransient<SummarizeService>();
+
+var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
 
 var app = builder.Build();
 
