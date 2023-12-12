@@ -2,6 +2,10 @@
 
 Please do not run this application. It is vulnerable..... and does contain major issues!
 
+## QR!
+
+
+
 ## Applicatie
 - DotNet LTS
 - Notities maken
