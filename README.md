@@ -2,6 +2,8 @@
 
 Please do not run this application. It is vulnerable..... and does contain major issues!
 
+# https://github.com/ramoncr/security-issues/
+
 ## QR!
 
 ![](download.png)
