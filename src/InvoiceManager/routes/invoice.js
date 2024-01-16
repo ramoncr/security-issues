@@ -3,21 +3,24 @@ const router = express.Router();
 const db = require("../models");
 
 /* GET users listing. */
-router.get("/:invoiceNumber", function (req, res, next) {
+router.get("/:invoiceNumber", async function (req, res, next) {
   const invoiceNumber = req.params.invoiceNumber;
+  const matchedInvoices = await db.invoices.findAll({
+    where: {
+      id: invoiceNumber
+    }
+  });
 
-  db.invoices
-    .findByPk(invoiceNumber)
-    .then((data) => {
-      if (data) {
-        res.render("invoice", data);
-      } else {
-        res.render("invoice", null);
-      }
-    })
-    .catch((err) => {
-      res.render("invoice", null);
-    });
+  if(matchedInvoices.length == 1) {
+    res.render("invoice", { invoice: matchedInvoices[0] });
+  } else {
+    res.render("invoice", { invoice: null });
+  }
+});
+
+router.get("/", async function (req, res, next) {
+  const invoices = await db.invoices.findAll();
+  res.render("invoices", { invoices });
 });
 
 /**
@@ -59,16 +62,15 @@ router.post("/search", async function (req, res, next) {
   }
 });
 
-
-router.post("/", async function(req, res, next) {
+router.post("/", async function (req, res, next) {
   const model = req.body;
 
-  if(!model.name || !model.amount) {
+  if (!model.name || !model.amount) {
     res.status(400);
     res.send({
       message: "Invalid model request",
-    })
-  } 
+    });
+  }
 
   const combinedData = Object.assign(
     {
