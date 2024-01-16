@@ -7,11 +7,11 @@ router.get("/:invoiceNumber", async function (req, res, next) {
   const invoiceNumber = req.params.invoiceNumber;
   const matchedInvoices = await db.invoices.findAll({
     where: {
-      id: invoiceNumber
-    }
+      id: invoiceNumber,
+    },
   });
 
-  if(matchedInvoices.length == 1) {
+  if (matchedInvoices.length == 1) {
     res.render("invoice", { invoice: matchedInvoices[0] });
   } else {
     res.render("invoice", { invoice: null });

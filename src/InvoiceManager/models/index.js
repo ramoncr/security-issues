@@ -12,6 +12,7 @@ const sequelize = new Sequelize({
 
   db.invoices = require('./invoice.model')(sequelize, Sequelize);
   db.clients = require('./client.model')(sequelize, Sequelize);
+  db.users = require('./user.model')(sequelize, Sequelize);
 
   db.invoices.belongsTo(db.clients);
   db.clients.hasMany(db.invoices);
