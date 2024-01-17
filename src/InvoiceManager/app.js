@@ -4,10 +4,10 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const passport = require("passport");
-var session = require("express-session");
-var SQLiteStore = require("connect-sqlite3")(session);
-var ensureLogIn = require("connect-ensure-login").ensureLoggedIn;
-var ensureLoggedIn = ensureLogIn();
+const session = require("express-session");
+const SQLiteStore = require("connect-sqlite3")(session);
+const ensureLogIn = require("connect-ensure-login").ensureLoggedIn;
+const ensureLoggedIn = ensureLogIn();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
