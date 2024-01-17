@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.SignalR;
 using Noteing.API.Data;
 using Noteing.API.Helpers;
+using Noteing.API.Hubs;
 using Noteing.API.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,10 +16,12 @@ namespace Noteing.API.Controllers
     public class NotesController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IHubContext<LiveUpdateHub> _hubContext;
 
-        public NotesController(ApplicationDbContext dbContext)
+        public NotesController(ApplicationDbContext dbContext, IHubContext<LiveUpdateHub> hubContext)
         {
             _dbContext = dbContext;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -30,7 +33,7 @@ namespace Noteing.API.Controllers
         }
 
 
-// Add endponit to get all notes?? TODO
+        // Add endponit to get all notes?? TODO
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
@@ -64,6 +67,7 @@ namespace Noteing.API.Controllers
                 value.Created = value.Updated = DateTimeOffset.UtcNow;
                 value.Owner = IdentityHelper.GetCurrentUserId(User);
                 await _dbContext.Notes.AddAsync(value);
+                existingNote = value;
             }
             else
             {
@@ -75,6 +79,13 @@ namespace Noteing.API.Controllers
             }
 
             await _dbContext.SaveChangesAsync();
+            await NotifyLiveUpdates(existingNote);
+        }
+
+        private async Task NotifyLiveUpdates(Note note)
+        {
+            await _hubContext.Clients.Group(note.Id.ToString()).SendAsync("updatedNote", note);
+            await _hubContext.Clients.Group(Guid.Empty.ToString()).SendAsync("updatedNote", note);
         }
     }
 }

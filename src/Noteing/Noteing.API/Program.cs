@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Noteing.API.Data;
 using Noteing.API.Helpers;
+using Noteing.API.Hubs;
 using Noteing.API.Models;
 using Noteing.API.Services;
 
@@ -43,6 +44,7 @@ builder.Services.Configure<JwtBearerOptions>(
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 
 builder.Services.AddCors(builder => builder.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
@@ -66,5 +68,6 @@ app.UseDeveloperExceptionPage();
 app.UseSwagger();
 
 app.MapControllers();
+app.MapHub<LiveUpdateHub>("/live-updates");
 
 app.Run();
