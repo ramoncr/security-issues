@@ -9,10 +9,13 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       password: {
-        type: Sequelize.BLOB
+        type: Sequelize.STRING
       },
       salt: {
-        type: Sequelize.BLOB
+        type: Sequelize.STRING
+      },
+      strategy: {
+        type: Sequelize.STRING,
       },
       locked: {
         type: Sequelize.BOOLEAN
