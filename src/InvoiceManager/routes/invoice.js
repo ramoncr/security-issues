@@ -82,4 +82,25 @@ router.post("/", async function (req, res, next) {
   var instance = Invoice.Build(combinedData);
   await instance.save();
 });
+
+
+router.post("/import", async function (req, res, next) {
+  const model = req.body;
+  let invoices = JSON.parse(model.invoices);
+  
+  for (let index = 0; index < array.length; index++) {
+    const invoice = invoices[index];
+    let existing_invoice = await db.invoices.findAll({
+      where: {
+        id: invoice.id
+      }
+    })
+
+    if (existing_invoice.length === 1) {
+      merge(existing_invoice, invoice);
+      await existing_invoice.save();
+    }   
+  }
+
+});
 module.exports = router;
