@@ -19,6 +19,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       locked: {
         type: Sequelize.BOOLEAN
+      },
+      isAdmin : {
+        type: Sequelize.BOOLEAN
       }
     });
 
