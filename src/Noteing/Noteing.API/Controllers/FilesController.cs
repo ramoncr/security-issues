@@ -1,7 +1,10 @@
-﻿using System.Text;
+﻿using System.IO.Compression;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Noteing.API.Data;
+using Noteing.API.Models;
 using Noteing.API.Services;
 
 namespace Noteing.API.Controllers
@@ -22,9 +25,10 @@ namespace Noteing.API.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpPost("image")]
-        public async Task<IActionResult> UploadImages(List<IFormFile> files)
+        [HttpPost("image/{noteId}")]
+        public async Task<IActionResult> UploadImages(List<IFormFile> files, [FromRoute] Guid noteId)
         {
+            List<CroppedImage> croppedImages = null;
             foreach (var file in files)
             {
                 var filePath = Path.Combine("/uploads/images/", Path.GetRandomFileName());
@@ -34,11 +38,40 @@ namespace Noteing.API.Controllers
                     await file.CopyToAsync(stream);
                 }
 
-                var croppedImages = await _imageCropService.CropImage(filePath, file.FileName);
-                await _storageService.StorageCroppedImges(croppedImages);
+                croppedImages = await _imageCropService.CropImage(filePath, file.FileName);
+                var existingNote = _dbContext.Notes.FirstOrDefault(note => note.Id == noteId);
+                if (existingNote is not null)
+                {
+                    existingNote.CroppedImages.AddRange(croppedImages);
+                    _dbContext.Update(existingNote);
+                    await _dbContext.SaveChangesAsync();
+                }
             }
 
-            return Ok();
+            return Ok(croppedImages);
+        }
+
+        [HttpPost("notes/{noteId}")]
+        public IActionResult DownloadNoteWithAllFiles([FromRoute] Guid noteId, [FromBody] DownloadNote downloadNote)
+        {
+            var existingNote = _dbContext.Notes.FirstOrDefault(note => note.Id == noteId);
+            if (existingNote is null)
+                return NotFound();
+
+            var temporaryFolder = Path.Combine(Path.GetTempPath(), downloadNote.ZipName) + Path.DirectorySeparatorChar;
+            var temporaryZip = Path.Combine(Path.GetTempPath(), downloadNote.ZipName);
+            Directory.CreateDirectory(temporaryFolder);
+
+            foreach (var croppedImage in existingNote.CroppedImages)
+            {
+                System.IO.File.Copy(croppedImage.Path, Path.Combine(temporaryFolder, Path.GetFileName(croppedImage.Path)));
+            }
+
+            System.IO.File.WriteAllText(Path.Combine(temporaryFolder, "note.md"), existingNote.Content);
+
+            ZipFile.CreateFromDirectory(temporaryFolder, temporaryZip);
+            var fileStream = System.IO.File.OpenRead(temporaryZip);
+            return File(fileStream, "application/zip");
         }
 
         [HttpGet("csv")]

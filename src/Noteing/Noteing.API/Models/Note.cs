@@ -7,6 +7,7 @@
         public string Content { get; set; }
         public Guid Owner { get;set; }
         public virtual List<NoteShare> Shares { get; set; }
+        public virtual List<CroppedImage> CroppedImages { get; set; }   
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset Updated { get; set; }
     }
