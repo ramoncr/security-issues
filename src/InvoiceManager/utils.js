@@ -48,7 +48,7 @@ function ensureAuthenticatedRequest() {
     if (!req.isAuthenticated || !req.isAuthenticated()) {
         console.log(req.originalUrl);
 
-      if (!req.originalUrl.includes("export")) {
+      if (!req.originalUrl.includes("/export")) {
         return res.redirect("/login");
       }
     }
