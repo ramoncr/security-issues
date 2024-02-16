@@ -6,16 +6,15 @@ const logger = require("morgan");
 const passport = require("passport");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
-const ensureLogIn = require("connect-ensure-login").ensureLoggedIn;
-const ensureLoggedIn = ensureLogIn();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const invoiceRouter = require("./routes/invoice");
-const pdfRouter = require("./routes/api/pdf");
+const pdfRouter = require("./routes/api/export");
 const ccRouter = require("./routes/api/cc");
 const authRouter = require("./routes/auth");
 const notificationsRouter = require("./routes/api/notifications");
+const { ensureAuthenticatedRequest } = require("./utils");
 
 // Setup database
 const db = require("./models/");
@@ -55,12 +54,12 @@ app.use(
 app.use(passport.authenticate("session"));
 
 app.use("/", authRouter);
-app.use("/", ensureLoggedIn, indexRouter);
-app.use("/users", ensureLoggedIn, usersRouter);
-app.use("/invoice", ensureLoggedIn, invoiceRouter);
-app.use("/api/pdf", ensureLoggedIn, pdfRouter);
-app.use("/api/notifications", ensureLoggedIn, notificationsRouter);
-app.use("/api/cc", ensureLoggedIn, ccRouter);
+app.use("/", ensureAuthenticatedRequest(), indexRouter);
+app.use("/users", ensureAuthenticatedRequest(), usersRouter);
+app.use("/invoice", ensureAuthenticatedRequest(), invoiceRouter);
+app.use("/api/export", ensureAuthenticatedRequest(), pdfRouter);
+app.use("/api/notifications", ensureAuthenticatedRequest(), notificationsRouter);
+app.use("/api/cc", ensureAuthenticatedRequest(), ccRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

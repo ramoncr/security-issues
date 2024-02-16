@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const puppeteer = require('puppeteer');
 
-router.get('/:invoiceNumber', async function(req, res, next) {
+router.get('/:invoiceNumber/pdf', async function(req, res, next) {
     const invoiceNumber = req.params.invoiceNumber;
 
     let url = req.query.url ? req.query.url : "http://localhost:3000/invoice/"
