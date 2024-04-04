@@ -1,19 +1,17 @@
 const invoiceModel = require("./invoice.model");
+const { DataTypes } = require("sequelize");
 
-module.exports = (sequelize, Sequelize) => {
-    const Client = sequelize.define("client", {
+module.exports = (sequelize) => {
+    return sequelize.define("client", {
       number: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       title: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       description: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       }
     });
-
-
-    return Client;
   };
   

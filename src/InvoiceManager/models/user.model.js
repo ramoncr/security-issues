@@ -1,30 +1,29 @@
-const clientModel = require("./client.model");
+const { DataTypes } = require("sequelize");
 
-module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define("user", {
+module.exports = (sequelize) => {
+    return sequelize.define("user", {
       username: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       password: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       salt: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       strategy: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       locked: {
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
       },
       isAdmin : {
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
       }
     });
 
-    return User;
   };
   

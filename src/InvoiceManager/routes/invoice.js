@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
+const { Op } = require("sequelize");
 
 /* GET users listing. */
 router.get("/:invoiceNumber", async function (req, res, next) {
@@ -32,6 +33,8 @@ router.get("/", async function (req, res, next) {
 
 router.post("/filter", function (req, res, next) {
   const condition = req.body.condition;
+
+  condition[Op.and] = { userId: req.userId }
   db.invoices
     .findAll({
       where: condition,

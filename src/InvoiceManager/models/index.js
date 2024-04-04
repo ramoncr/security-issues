@@ -1,5 +1,5 @@
 const dbConfig = require("../config/db.config");
-const Sequelize = require("sequelize");
+const Sequelize = require("sequelize").Sequelize;
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -10,12 +10,12 @@ const sequelize = new Sequelize({
   db.Sequelize = Sequelize;
   db.sequelize = sequelize;
 
-  db.invoices = require('./invoice.model')(sequelize, Sequelize);
-  db.clients = require('./client.model')(sequelize, Sequelize);
-  db.users = require('./user.model')(sequelize, Sequelize);
+  db.invoices = require('./invoice.model')(sequelize);
+  db.clients = require('./client.model')(sequelize);
+  db.users = require('./user.model')(sequelize);
+  db.plugins = require('./plugin.model')(sequelize);
 
   db.invoices.belongsTo(db.clients);
   db.clients.hasMany(db.invoices);
-
 
   module.exports = db;
