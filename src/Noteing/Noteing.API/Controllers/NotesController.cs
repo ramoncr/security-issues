@@ -11,7 +11,7 @@ using Noteing.API.Models;
 namespace Noteing.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class NotesController : ControllerBase
     {

@@ -8,7 +8,14 @@ namespace Noteing.API.Helpers
 
         internal static Guid GetCurrentUserId(ClaimsPrincipal principal)
         {
-            return Guid.Parse(principal.Identity.GetSubjectId());
+            try
+            {
+                return Guid.Parse(principal.Identity.GetSubjectId());
+            }
+            catch
+            {
+                return Guid.Empty;
+            }
         }
     }
 }

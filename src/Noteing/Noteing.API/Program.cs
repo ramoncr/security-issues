@@ -20,10 +20,16 @@ var connectionString = builder.Configuration.GetConnectionString("ConnString");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+})
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddIdentityServer()
+builder.Services.AddIdentityServer(opt =>
+{
+    opt.UserInteraction.LoginUrl = "/login";
+})
     .AddSigningCredential(CertificateHelper.LoadSigningCertificate(), SecurityAlgorithms.RsaSha256)
     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
@@ -58,6 +64,7 @@ builder.Services.AddSingleton(emailConfig);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseIdentityServer();
