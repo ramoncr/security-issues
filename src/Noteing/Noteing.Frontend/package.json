@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "@vueup/vue-quill": "^1.2.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "quill": "^2.0.2",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5"
   },

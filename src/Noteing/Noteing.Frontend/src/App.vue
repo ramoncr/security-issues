@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header class="p-3 mb-3 border-bottom">
+  <header class="p-3 border-bottom">
     <div class="container-fluid">
       <div
         class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
