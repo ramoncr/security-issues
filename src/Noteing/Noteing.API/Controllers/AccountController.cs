@@ -95,10 +95,20 @@ namespace Noteing.API.Controllers
             result.FirstName = model.FirstName;
             result.LastName = model.LastName;
             result.MiddleName = model.MiddleName;
-
+            
             await _userManager.UpdateAsync(result);
+            
+            // Handle password change if provided within the request
+            if (!string.IsNullOrEmpty(model.Password))
+            {
+                // Remove existing passwords in case it has been leaked
+                await _userManager.RemovePasswordAsync(result);
+                
+                // Add new password so the user can login again
+                await _userManager.AddPasswordAsync(result, model.Password);
+            }
 
-
+            // Update logins
             foreach (var role in model.Roles)
             {
                 if (!await _userManager.IsInRoleAsync(result, role))
