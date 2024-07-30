@@ -14,17 +14,20 @@
     <div class="editor" ref="editor"></div>
     <quill-editor theme="snow" v-model:content="note.content" contentType="html" />
 
-    <div class="mt-2">
+    <div class="mt-2 float-end">
       <button class="btn btn-success" @click="save">Save</button>
+      <button class="btn btn-primary ms-2" @click="share">Share</button>
+      <button class="btn btn-danger ms-2">Delete</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUpdated, ref } from 'vue'
 import api from '@/http-common'
 import { useRoute } from 'vue-router'
 import type { Note } from '@/models'
+import { createShareLink } from '@/services/share.service';
 
 const route = useRoute()
 
@@ -36,14 +39,35 @@ onMounted(async () => {
   await loadContents()
 })
 
+onUpdated(async () => {
+  const id = route.params.id
+
+  if(id !== note.value?.id) {
+    note.value = undefined;
+    await loadContents()
+  }
+})
+
 async function loadContents() {
   const id = route.params.id
 
   const response = await api.get<Note>('notes/' + id)
-  note.value = response.data
+  note.value = response.data;
+  note.value.croppedImages = [];
+  note.value.shares = [];
 }
 
 async function save() {
-  
+  const id = route.params.id
+  await api.put<Note>('notes/' + id, note.value);
+  location.reload();
+}
+
+
+async function share() {
+  if(!note.value) return;
+
+  const link = createShareLink(note.value);
+  navigator.clipboard.writeText(link);
 }
 </script>

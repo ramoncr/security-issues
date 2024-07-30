@@ -33,6 +33,11 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/share/:payload',
+      name: 'resolve-share',
+      component: () => import('../views/ShareView.vue')
     }
   ]
 })

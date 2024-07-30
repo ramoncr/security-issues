@@ -8,7 +8,7 @@
             <li v-for="note in notes" v-bind:key="note.id" class="list-group-item d-flex justify-content-between align-items-start" @click="open(note)">
               <div class="ms-2 me-auto">
                 <div class="fw-bold">{{ note.name ?? "- No name -"}}</div>
-                {{note.content?.substring(0, 50) ?? "- No content -"}}
+                <span class="m-0 p-0" v-html="note.content?.substring(0, 50) ?? '- No content -'"></span>
               </div>
             </li>
           </ol>
@@ -49,6 +49,7 @@ async function open(note: Note) {
   });
 
 }
+
 
 </script>
 

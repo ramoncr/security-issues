@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Duende.IdentityServer.Extensions;
+using IdentityModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Noteing.API.Data;
@@ -54,6 +56,24 @@ namespace Noteing.API.Controllers
         {
             var note = _dbContext.Notes.First(note => note.Id == id && note.Owner == IdentityHelper.GetCurrentUserId(User));
             _dbContext.Notes.Remove(note);
+        }
+
+        [HttpPost("{id}/share")]
+        public IActionResult Share(Guid id, [FromBody] ShareNoteContent shareNoteContent)
+        {
+            var note = _dbContext.Notes.FirstOrDefault(note => note.Id == id && note.Id == shareNoteContent.NoteId);
+            if (note == default) return NotFound();
+
+            var noteShare = new NoteShare
+            {
+                NoteId = note.Id,
+                AccountId = Guid.Parse(HttpContext.User.GetSubjectId())
+            };
+            
+            note.Shares.Add(noteShare);
+            _dbContext.SaveChanges();
+            
+            return Ok();
         }
 
         private async Task ProcessChange(Note value)
